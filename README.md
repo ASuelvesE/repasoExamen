@@ -1,1 +1,1 @@
-# repasoExamen
+# Typescript-noticiero
