@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express'
+import Modulo from '../../models/Modulo';
 import ModulosRepositoryMySQL from '../../repositories/api/modulos/modulos.mysql';
 
 
@@ -15,10 +16,23 @@ router.get('/', async (req: Request, res: Response) => {
         res.send(error)
     }
 })
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id/:curso', async (req: Request, res: Response) => {
     try {       
-        const modulo = await ApiModulosRepository.findAll()
+        const idModulo = Number(req.params.id);
+        const curso = String(req.params.curso);
+        const modulo = await ApiModulosRepository.findByIdAndCurso(idModulo,curso);
         res.send(modulo)
+    }
+    catch (error) {
+        res.send(error)
+    }
+})
+router.get('/:id/:curso/calificaciones', async (req: Request, res: Response) => {
+    try {       
+        const idModulo = Number(req.params.id);
+        const curso = String(req.params.curso);
+        const modulo = await ApiModulosRepository.findCalificacionesByIdAndCurso(idModulo,curso);
+        res.send(modulo);
     }
     catch (error) {
         res.send(error)
@@ -26,27 +40,38 @@ router.get('/:id', async (req: Request, res: Response) => {
 })
 router.post('/', async (req: Request, res: Response) => {
     try {       
-         res.send(periodistas)
+        const nombre:String = req.body.nombre;
+        const modulo = await ApiModulosRepository.save(new Modulo(0,nombre,undefined,undefined,undefined));
+        res.send(modulo);
     }
     catch (error) {
         res.send(error)
     }
 })
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id/:curso', async (req: Request, res: Response) => {
     try {       
-        res.send(periodistas)
+        const idModulo = Number(req.params.id);
+        const curso = String(req.params.curso);
+        const estudiantes = req.body.estudiantes;
+        const modulos = await ApiModulosRepository.addEstudiantesByIdAndCurso(idModulo,curso,estudiantes)
+        res.send(estudiantes.length + " estudiantes matriculados");
     }
     catch (error) {
         res.send(error)
     }
 })
-router.delete('/:id', async (req: Request, res: Response) => {
+router.put('/:id/:curso/:estudiante', async (req: Request, res: Response) => {
     try {       
+        const idModulo = Number(req.params.id);
+        const curso = String(req.params.curso);
+        const idEstudiante = Number(req.params.estudiante);
+        const calificacion = req.body.calificacion;
+        const modulos = await ApiModulosRepository.addCalificationByIdAndCurso(idModulo,curso,idEstudiante,calificacion)
+        res.send(modulos);
+    }
+    catch (error) {
+        res.send(error)
+    }
+})
 
-        res.send(periodistas)
-    }
-    catch (error) {
-        res.send(error)
-    }
-})
 export { router as routerApiModulos};

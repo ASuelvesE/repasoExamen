@@ -6,14 +6,14 @@ export default class Modulo {
     id: Number
     nombre: String
     estudiantes: Estudiante[] | undefined
-    calificacion: Number | undefined
     curso: String | undefined
+    calificacion: Number | undefined
 
-    constructor(id: Number, nombre: String,estudiantes: Estudiante[] | undefined,calificacion: Number | undefined,curso: String | undefined){
+    constructor(id: Number, nombre: String,estudiantes: Estudiante[] | undefined,curso: String | undefined, calificacion: Number | undefined){
         this.id = id;
         this.nombre = nombre;
         this.estudiantes = estudiantes;
-        this.calificacion = calificacion;
         this.curso = curso;
+        this.calificacion = calificacion;
     }
 }

@@ -19,11 +19,11 @@ router.get('/', async (req: Request, res: Response) => {
     }
 })
 router.get('/:id/:curso', async (req: Request, res: Response) => {
-    try {       
-        const estudianteDB: Estudiante = await ApiEstudiantesRepository.findById(Number(req.params.id))
-        const modulosDB: Modulo[] = await ApiModulosRepository.findByIdAndEstudiante(Number(req.params.id),Number(req.params.curso))
-        const estudiante: Estudiante = new Estudiante(estudianteDB.id,estudianteDB.nombre,modulosDB);
-        res.send(estudiante);
+    try {     
+        const idEstudiante = Number(req.params.id);
+        const curso = req.params.curso;  
+        const estudianteDB: Estudiante = await ApiEstudiantesRepository.findByIdAndCurso(idEstudiante,curso)
+         res.send(estudianteDB);
     }
     catch (error) {
         res.send(error)
@@ -31,8 +31,9 @@ router.get('/:id/:curso', async (req: Request, res: Response) => {
 })
 router.post('/', async (req: Request, res: Response) => {
     try {       
-        const estudiantes = await ApiEstudiantesRepository.save(new Estudiante(0,req.body.nombre,undefined));
-        res.send(estudiantes)
+        const nombre = req.body.nombre;
+        const estudiante = await ApiEstudiantesRepository.save(new Estudiante(0,nombre,undefined,undefined));
+        res.send(estudiante)
     }
     catch (error) {
         res.send(error)
