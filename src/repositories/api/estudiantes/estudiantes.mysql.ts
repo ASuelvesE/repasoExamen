@@ -21,7 +21,7 @@ export default class EstudiantesRepositoryMySQL implements IEstudiantesRepositor
         const sql: string = `select * FROM estudiantes where nombre = '${nombre}'`
         try {
             const data: any = await executeQuery<Estudiante[]>(sql)
-            return new Estudiante(data.id,data.nombre,undefined,undefined);
+            return new Estudiante(data[0].id,data[0].nombre,undefined,undefined);
         } catch (error) {
             console.error(error);
             return new Estudiante(0,"",[],undefined);
@@ -51,7 +51,8 @@ export default class EstudiantesRepositoryMySQL implements IEstudiantesRepositor
         const sql: string = `insert into estudiantes (nombre) values ("${estudiante.nombre}")`
         try {
             await executeQuery<Estudiante[]>(sql)
-            return await this.findByName(String(estudiante.nombre));
+            const estudianteNuevo: Estudiante = await this.findByName(String(estudiante.nombre));
+            return estudianteNuevo;
         } catch (error) {
             console.error(error);
             return new Estudiante(0,"",[],undefined);
