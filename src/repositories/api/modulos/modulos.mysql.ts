@@ -58,16 +58,6 @@ export default class ModulosRepositoryMySQL implements IModulosRepository {
             return new Modulo(0,"",undefined,undefined,undefined);
         }
     }
-    async findCalificacionByEstudianteAndCurso(idEstudiante: Number, curso: String): Promise<Modulo[]> {
-        const sql = `select * from modulos`;
-        try {
-            await executeQuery<Modulo[]>(sql)
-            return this.findAll();
-        } catch (error) {
-            console.error(error);
-            return [];
-        }
-    }
     async save(modulo: Modulo): Promise<Modulo[]> {
         const sql = `insert into modulos (nombre) values('${modulo.nombre}')`;
         try {
@@ -91,7 +81,7 @@ export default class ModulosRepositoryMySQL implements IModulosRepository {
         }
 
     }
-    async addCalificationByIdAndCurso(idModulo: Number, curso: String, idEstudiante: Number, calificacion: Number): Promise<Modulo[]> {
+    async addCalificationByIdAndCurso(idModulo: Number, curso: String, idEstudiante: Number, calificacion: Number): Promise<Modulo> {
         const sql = `update modulos_estudiantes 
         set calificacion = ${calificacion}
         where id_modulo = ${idModulo} 
@@ -99,10 +89,10 @@ export default class ModulosRepositoryMySQL implements IModulosRepository {
         and curso = '${curso}';`;
         try {
             await executeQuery<Modulo[]>(sql)
-            return this.findAll();;
+            return await this.findCalificacionesByIdAndCurso(idModulo,curso);
         } catch (error) {
             console.error(error);
-            return [];
+            return new Modulo(0,"",undefined,undefined,undefined);
         }
     }
 

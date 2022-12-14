@@ -66,8 +66,8 @@ router.put('/:id/:curso/:estudiante', async (req: Request, res: Response) => {
         const curso = String(req.params.curso);
         const idEstudiante = Number(req.params.estudiante);
         const calificacion = req.body.calificacion;
-        const modulos = await ApiModulosRepository.addCalificationByIdAndCurso(idModulo,curso,idEstudiante,calificacion)
-        res.send(modulos);
+        const modulo = await ApiModulosRepository.addCalificationByIdAndCurso(idModulo,curso,idEstudiante,calificacion);
+        res.send(modulo);
     }
     catch (error) {
         res.send(error)

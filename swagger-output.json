@@ -167,7 +167,7 @@
               "type": "object",
               "properties": {
                 "estudiantes": {
-                  "example": "any"
+                  "example": []
                 }
               }
             }
@@ -230,10 +230,10 @@
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
+              "type": "number",
               "properties": {
                 "calificacion": {
-                  "example": "any"
+                  "example": 0
                 }
               }
             }
